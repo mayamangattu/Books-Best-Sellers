@@ -1,70 +1,182 @@
-# Getting Started with Create React App
+### index.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# up to children prop
 
-## Available Scripts
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-In the project directory, you can run:
+import "./index.css";
+import img1 from "./images/book1.png";
+import img2 from "./images/book2.jpg";
+// import App from './App';
 
-### `npm start`
+const firstBook = {
+author: "Gaur Gopal Das",
+title: "Energize Your Mind",
+img: img1,
+};
+const secondBook = {
+author: "James Clear ",
+title: "Atomic Habits",
+img: img2,
+};
+// const img = "./images/book1.png";
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+const BookList = () => {
+return (
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<section className="booklist">
+<Book
+        author={firstBook.author}
+        title={firstBook.title}
+        img={firstBook.img}
+      >
+<p>This is so special book. It is really surprising!!.</p>
+<button>click me</button>
+</Book>
+<Book
+        author={secondBook.author}
+        title={secondBook.title}
+        img={secondBook.img}
+      />
+{/_ <Book author={author} title={title} img={img1} />
+<Book author={author} title={title} img={img1} />
+<Book author={author} title={title} img={img1} /> _/}
+</section>
+);
+};
 
-### `npm test`
+const Book = ({ img, title, author, children }) => {
+return (
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<article className="book">
+<div>
+<img src={img} alt={title} />
+<h2>{title}</h2>
+<h4>{author}</h4>
+{children}
+{/_ <p>{props.job}</p>
+<p>{props.title}</p>
+<p>{props.number}</p> _/}
+</div>
+</article>
+);
+};
 
-### `npm run build`
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<BookList />);
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+export default BookList;
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+##### up to ES6 modules
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-### `npm run eject`
+import "./index.css";
+import img1 from "./images/book1.png";
+import img2 from "./images/book2.jpg";
+// import App from './App';
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const books = [
+{
+author: "Gaur Gopal Das",
+title: "Energize Your Mind",
+img: img1,
+id: 1,
+},
+{
+author: "James Clear ",
+title: "Atomic Habits",
+img: img2,
+id: 2,
+},
+];
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+const BookList = () => {
+// const someValue = "shakeAndBake";
+// const displayValue = () => {
+// console.log(someValue);
+// };
+const getBook = (id) => {
+const book = books.find((book) => book.id === id);
+console.log(book);
+};
+return (
+<section className="booklist">
+<EventExamples />
+{books.map((book) => {
+// const { img, title, author, id } = book;
+return <Book {...book} key={book.id} getBook={getBook} />;
+})}
+</section>
+);
+};
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+const EventExamples = () => {
+const handleFormInput = (e) => {
+console.log(e.target);
+console.log(e.target.name);
+console.log(e.target.value);
+};
+const handleButtonClick = () => {
+alert("handle button click");
+};
+const handleFormSubmission = (e) => {
+e.preventDefault();
+console.log("form submitted");
+};
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+return (
+<section>
+<form onSubmit={handleFormSubmission}>
+<h2>Typical Form</h2>
+<input
+type="text"
+name="example"
+onChange={handleFormInput}
+style={{ margin: "1rem 0" }}
+/>
+<button type="submit" onClick={handleFormSubmission}>
+submit
+</button>
+<button onClick={handleButtonClick} type="button">
+click me
+</button>
+</form>
+</section>
+);
+};
 
-## Learn More
+const Book = (props) => {
+const { img, title, author, getBook, id } = props;
+// console.log(props);
+// const getSingleBook = () => {
+// getBook(id);
+// };
+// const displayTitle = () => {
+// console.log(title);
+// };
+return (
+<article className="book">
+<div>
+<img src={img} alt={title} />
+<h2>{title}</h2>
+{/_ <button onClick={displayTitle}>display title</button> _/}
+{/_ <button onClick={getSingleBook}>click me</button> _/}
+<button onClick={() => getBook(id)}>click me</button>
+<h4>{author}</h4>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+        {/* <p>{props.job}</p>
+        <p>{props.title}</p>
+        <p>{props.number}</p> */}
+      </div>
+    </article>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+);
+};
 
-### Code Splitting
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<BookList />);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default BookList;
